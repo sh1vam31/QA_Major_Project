@@ -1,0 +1,113 @@
+package DropDown;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Select_Drop_Down {
+WebDriver driver;
+	
+//@BeforeMethod
+//	public void setup() {
+//		WebDriverManager.chromedriver().setup();
+//		driver = new ChromeDriver();
+//		driver.manage().window().maximize();
+//	}
+	
+	@Test
+	public void SelectClass() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+
+		driver.get("https://www.amazon.in/?&tag=googhydrabk1-21&ref=pd_sl_5szpgfto9i_e&adgrpid=155259813593&hvpone=&hvptwo=&hvadid=674893540034&hvpos=&hvnetw=g&hvrand=3588588111851645836&hvqmt=e&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062082&hvtargid=kwd-64107830&hydadcr=14452_2316413&gad_source=1");
+		
+		WebDriverWait wait = new WebDriverWait(driver , Duration.ofSeconds(10));	
+		
+		WebElement staticDropDown = driver.findElement(By.id("searchDropdownBox"));
+		
+	 	///// Drop Down Methods /////
+		
+		Select dropDown  = new Select(staticDropDown);               
+		  
+		dropDown.selectByVisibleText("Books");
+		
+		System.out.println(dropDown.getFirstSelectedOption().getText());
+//	
+//		dropDown.selectByIndex(7);
+//		
+//		System.out.println(dropDown.getFirstSelectedOption().getText());
+//		
+//
+//		
+//		dropDown.selectByValue("search-alias=baby");
+//		
+//	   System.out.println(dropDown.getFirstSelectedOption().getText());
+//		
+//		
+//       List<WebElement> lists = dropDown.getOptions();   
+//	 
+//	    for(int i =0; i<=5; i++) {
+//        System.out.println(lists.get(i).getText());
+//
+//	}
+//	   
+		
+		        ////  Next Step ////
+		        
+		WebElement search_btn = driver.findElement(By.id("twotabsearchtextbox"));
+		search_btn.sendKeys("Batman");
+		search_btn.sendKeys(Keys.ENTER);
+		
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("h2[aria-label=\"Batman: Year One\"]"))));
+		
+		WebElement product1 = driver.findElement(By.cssSelector("h2[aria-label=\"Batman: Year One\"]"));
+		String product1Text = product1.getText();
+		
+		driver.navigate().back();
+		
+//		WebElement search_btn = driver.findElement(By.id("twotabsearchtextbox"));
+//		search_btn.sendKeys("Batman");
+//		search_btn.sendKeys(Keys.ENTER);
+		
+		WebElement search_btn2 = driver.findElement(By.id("twotabsearchtextbox"));
+		search_btn2.sendKeys("Batman");
+		search_btn2.sendKeys(Keys.ENTER);
+		
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(("(//h2[@class=\"a-size-base-plus a-spacing-none a-color-base a-text-normal\"])[1]")))));
+		        
+		WebElement product2 = driver.findElement(By.xpath(("(//h2[@class=\"a-size-base-plus a-spacing-none a-color-base a-text-normal\"])[1]")));
+	   String product2Text = product2.getText();
+	   
+		
+	           	///// Check Both product /////
+		
+		if(product1Text.equals(product2Text)) {
+			System.out.println("Both product are same");
+		} else {
+			System.out.println("Both product are not same");
+		}
+	
+		driver.quit();
+	   
+	}
+	
+	
+}
+	
+	
+	
+	
+
