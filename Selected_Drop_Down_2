@@ -1,0 +1,291 @@
+package DropDown;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Drop_Down_2 {
+	String str;
+	WebDriver driver;
+	
+	@BeforeMethod
+	public void setup() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+	}
+	
+	@Test
+	public void test1() {
+		driver.get("https://selenium-select-practice.vercel.app/");
+		
+		WebElement staticDropDown = driver.findElement(By.cssSelector("select[style=\"width: 100%; padding: 0.5rem; border-radius: 5px; border: 1px solid rgb(204, 204, 204); font-size: 1rem;\"]"));
+		
+		Select dropDown = new Select(staticDropDown);
+		
+		dropDown.selectByValue("Blue");
+		
+		String text = dropDown.getFirstSelectedOption().getText();
+		
+		Assert.assertEquals(text, "Blue");
+		
+		System.out.println("Test case 1 Passed");
+		
+		driver.quit();
+			
+	}
+	
+	@Test
+	public void test2() {
+		driver.get("https://selenium-select-practice.vercel.app/");
+		
+		WebElement staticDropDown = driver.findElement(By.cssSelector("select[multiple=\"\"]"));
+		
+		Select dropDown = new Select(staticDropDown);
+		
+		dropDown.selectByIndex(0);
+		dropDown.selectByValue("Java");
+		dropDown.selectByVisibleText("Python");
+		
+
+		List<WebElement> lists = dropDown.getAllSelectedOptions();
+		for(int i =0; i<lists.size(); i++) {
+			str = lists.get(i).getText();
+			System.out.println(str);
+		}
+		
+		Assert.assertEquals(str, "Java");	
+		System.out.println("Test case Passed");
+		
+		dropDown.deselectByValue("Java");
+		
+		List<WebElement> lists2 = dropDown.getAllSelectedOptions();
+		for(int j =0; j<lists2.size(); j++) {
+			str = lists.get(j).getText();
+		}
+		Assert.assertEquals(str, "Python");
+		System.out.println("Test case Passed Again");
+		
+		driver.quit();
+		
+	}
+	
+	@Test
+	public void test3() {
+		driver.get("https://selenium-select-practice.vercel.app/");
+		
+		WebElement radio_btn1 = driver.findElement(By.cssSelector("input[value=\"Male\"]"));
+		radio_btn1.click();
+		
+		Assert.assertTrue(radio_btn1.isSelected());
+		
+		WebElement radio_btn2 = driver.findElement(By.cssSelector("input[value=\"Female\"]"));
+		Assert.assertFalse(radio_btn2.isSelected());
+		
+		WebElement radio_btn3 = driver.findElement(By.cssSelector("input[value=\"Other\"]"));
+		Assert.assertFalse(radio_btn3.isSelected());
+		
+		System.out.println("Test case 3 Passed ");
+		
+		driver.quit();
+	}
+	
+	
+
+	@Test
+
+	public void test4() throws InterruptedException {
+		driver.get("https://selenium-select-practice.vercel.app/");
+		
+		String[] SelectedFruits = new String[3]; 
+		
+		WebElement Check_box_1 = driver.findElement(By.cssSelector("input[name=\"apple\"]"));
+		Check_box_1.click();
+		SelectedFruits[0] = Check_box_1.getAttribute("name");
+		
+		WebElement Check_box_2 = driver.findElement(By.cssSelector("input[name=\"cherry\"]"));
+		Check_box_2.click();
+		SelectedFruits[1] = Check_box_2.getAttribute("name");
+		
+		WebElement Check_box_3 = driver.findElement(By.cssSelector("input[name=\"mango\"]"));
+		Check_box_3.click();
+		SelectedFruits[2] = Check_box_3.getAttribute("name");
+		
+		
+		 String finalStr = String.join(", ", SelectedFruits);
+		
+		Thread.sleep(4);
+		
+		Assert.assertEquals(finalStr, "apple, cherry, mango");
+		
+		System.out.println("Test Case 4 passed");
+		
+		driver.quit();
+		
+	}
+
+		
+	
+	@Test
+	public void test5() {
+		driver.get("https://www.spicejet.com/");
+		
+		WebElement radio_btn1 = driver.findElement(By.xpath("(//div[@class=\"css-76zvg2 r-homxoj r-ubezar r-1ozqkpa\"])[1]"));
+		radio_btn1.click();
+		if((radio_btn1.isSelected())){
+			System.out.println("Passed");
+		}else {
+			System.out.println("Not Passed");
+		}
+		
+		WebElement Return_btn = driver.findElement(By.xpath("//div[@class=\"css-76zvg2 css-bfa6kz r-1862ga2 r-1gkfh8e r-icoktb\"]"));
+		Assert.assertTrue(Return_btn.isEnabled());
+		
+		System.out.println("Test case 5 Passed ");
+		
+		driver.quit();
+	
+	}	
+	
+	@Test
+	public void test6() {
+    	driver.get("https://www.spicejet.com");
+    	
+	  WebElement elements=driver.findElement(By.xpath("//*[@id=\"main-container\"]/div/div[1]/div[3]/div[2]/div[3]/div/div[1]/div[1]/div[2]/input"));
+	elements.sendKeys("BLR");
+	
+	WebElement element=driver.findElement(By.xpath("//*[@id=\"main-container\"]/div/div[1]/div[3]/div[2]/div[3]/div/div[3]/div[1]/div[2]/input"));
+	element.sendKeys("DEL");	
+	    
+	driver.quit();
+	}
+	
+	@Test
+	public void test7() {
+		driver.get("https://www.spicejet.com");
+		
+		WebElement Date_btn = driver.findElement(By.xpath("(//div[@class=\"css-76zvg2 css-bfa6kz r-homxoj r-ubezar\"])[1]"));
+		Date_btn.click();
+		
+		WebElement Month = driver.findElement(By.xpath("//div[@class=\"css-76zvg2 r-homxoj r-adyw6z r-1kfrs79\"  and  text() = \"June \"]"));
+		Month.click();
+		
+		WebElement Date_choose = driver.findElement(By.xpath("//div[@data-testid=\"undefined-month-June-2025\"] //div[@data-testid=\"undefined-calendar-day-5\"]"));
+		Date_choose.click();
+		
+		System.out.println("Passed");
+		
+		WebElement Return_Date = driver.findElement(By.xpath("//div[@data-testid=\"return-date-dropdown-label-test-id\"]"));
+		Return_Date.click();
+		
+		System.out.println("Passed1111111111");
+		
+		WebElement Return_Month = driver.findElement(By.cssSelector("div[data-testid=\"undefined-month-July-2025\"]"));
+		Return_Month.click();
+		
+		System.out.println("Passed22222222222");
+		
+		WebElement Return_Date_choose = driver.findElement(By.cssSelector("div[data-testid=\"undefined-month-July-2025\"] div[data-testid=\"undefined-calendar-day-5\"]"));
+		Return_Date_choose.click();
+		
+		System.out.println("Test Case 7 Passed");
+		
+		driver.quit();
+		
+		
+	}
+	
+	
+	
+	
+	
+	@Test(priority = 1)
+    public void Spicejet() throws InterruptedException {
+        driver.get("https://www.spicejet.com");
+
+        driver.findElement(By.xpath("//*[@data-testid='home-page-travellers']")).click();
+
+        WebElement adult = driver.findElement(By.xpath("//*[@data-testid='Adult-testID-plus-one-cta']"));
+        WebElement child = driver.findElement(By.xpath("//*[@data-testid='Children-testID-plus-one-cta']"));
+
+        while (true) {
+            try {
+                driver.findElement(By.xpath("//*[@class='css-76zvg2 r-homxoj r-adyw6z r-q4m81j' and text()='5']"));
+                break; 
+            } catch (NoSuchElementException e) {
+                adult.click();
+                Thread.sleep(500);
+            }
+        }
+
+        while (child.isEnabled()) {
+            child.click();
+            Thread.sleep(500);
+        }
+    }
+    @Test(priority = 2)
+    public void SpicejetR() throws InterruptedException {
+        driver.get("https://www.spicejet.com");
+
+        driver.findElement(By.xpath("//*[@data-testid='home-page-travellers']")).click();
+
+        WebElement adult = driver.findElement(By.xpath("//*[@data-testid='Adult-testID-plus-one-cta']"));
+        WebElement infant = driver.findElement(By.xpath("//*[@data-testid=\"Infant-testID-plus-one-cta\"]"));
+
+        while (true) {
+            try {
+                driver.findElement(By.xpath("//*[@class='css-76zvg2 r-homxoj r-adyw6z r-q4m81j' and text()='9']"));
+                break; 
+            } catch (NoSuchElementException e) {
+                adult.click();
+                Thread.sleep(500);
+            }
+        }
+
+        while (infant.isEnabled()) {
+            infant.click();
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(priority = 3)
+    public void SpicejetRe() throws InterruptedException {
+        driver.get("https://www.spicejet.com");
+
+        driver.findElement(By.xpath("//*[@data-testid='home-page-travellers']")).click();
+
+        WebElement child = driver.findElement(By.xpath("//*[@data-testid='Children-testID-plus-one-cta']"));
+        WebElement infant = driver.findElement(By.xpath("//*[@data-testid=\"Infant-testID-plus-one-cta\"]"));
+
+        while (true) {
+            try {
+                driver.findElement(By.xpath("//*[@class='css-76zvg2 r-homxoj r-adyw6z r-q4m81j' and text()='4']"));
+                break; 
+            } catch (NoSuchElementException e) {
+                child.click();
+                Thread.sleep(500);
+            }
+        }
+
+        while (infant.isEnabled()) {
+            infant.click();
+            Thread.sleep(500);
+        }
+  
+        
+    }
+	
+
+	
+	
+}
