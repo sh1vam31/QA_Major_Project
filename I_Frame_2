@@ -1,0 +1,124 @@
+package In_Frame;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class frame_2 {
+WebDriver driver;                                                                                                     
+@BeforeMethod
+public void setup() {
+	WebDriverManager.chromedriver().setup();
+	driver = new ChromeDriver();
+	driver.manage().window().maximize();
+}
+
+
+
+	@Test(priority = 1)
+	public void tearDown() throws InterruptedException {
+		
+		driver.get("https://switch-tabs-qa-z77q.vercel.app/");
+		
+		WebElement Email = driver.findElement(By.cssSelector("input[type=\"email\"]"));
+		Email.sendKeys("pst@gmail.com");
+		
+		WebElement Password = driver.findElement(By.cssSelector("input[type=\"password\"]"));
+		Password.sendKeys("1234512345");
+		 
+		driver.findElement(By.xpath("//button[text() = 'Login']")).click();
+		
+		driver.switchTo().alert().accept();
+		
+		System.out.println("Passed");
+		
+		Thread.sleep(2000);
+		
+		WebElement frame1 = driver.findElement(By.xpath("//iframe"));
+		driver.switchTo().frame(frame1);
+		
+		System.out.println("Passed2");
+		
+		WebElement click = driver.findElement(By.id("clickButton"));
+		click.click();
+		
+		WebElement check = driver.findElement(By.xpath("//p[text() = 'Button Clicked!']"));
+		String text = check.getText();
+		
+		Assert.assertEquals(text, "Button Clicked!");
+		
+		
+		
+		
+		driver.quit();
+		
+	} 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		@Test
+		public void test1() throws InterruptedException {
+		
+	    driver.get("https://switch-tabs-qa-z77q.vercel.app");
+
+	    WebElement emailInput = driver.findElement(By.xpath("//input[@type='email']"));
+	    emailInput.click();
+	    emailInput.sendKeys("pst@gmail.com");
+
+	    WebElement passwordInput = driver.findElement(By.xpath("//input[@type='password']"));
+	    passwordInput.click();
+	    passwordInput.sendKeys("1234512345");
+	    driver.findElement(By.xpath("//button")).click();
+	    Thread.sleep(2000);  // Replace with WebDriverWait in production
+	    Alert alert = driver.switchTo().alert();
+	    alert.accept();
+
+	    WebElement iframe = driver.findElement(By.xpath("//iframe"));
+	    driver.switchTo().frame(iframe);
+	    driver.findElement(By.id("clickButton")).click();
+	    driver.switchTo().defaultContent();
+
+	    driver.findElement(By.xpath("//a")).click();
+
+	    Set<String> tabs = driver.getWindowHandles();
+	    Iterator<String> it = tabs.iterator();
+	    String mainTab = it.next();
+	    String newTab = it.next();
+
+	    driver.switchTo().window(newTab);
+	    WebElement heading = driver.findElement(By.xpath("//h1"));
+	    String headingText = heading.getText();
+	    String[] words = headingText.split(" ");
+	    String lastWord = words[words.length - 1];
+
+	    driver.close();
+	    driver.switchTo().window(mainTab);
+	    WebElement resultInput = driver.findElement(By.xpath("//input[@type='text']"));
+	    resultInput.sendKeys(lastWord);
+	    driver.findElement(By.xpath("//button")).click();
+	}
+	
+	
+}
