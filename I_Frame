@@ -1,0 +1,116 @@
+package In_Frame;
+
+import java.util.ArrayList;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+	public class frame {
+WebDriver driver;
+	
+	@BeforeClass
+	public void setup() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+}
+	@Test
+	public void test1() throws InterruptedException {	
+		
+		driver.get("https://switch-tabs-qa-z77q.vercel.app/");
+		
+		WebElement Email_btn = driver.findElement(By.cssSelector("input[type=\"email\"]"));
+		Email_btn.sendKeys("pst@gmail.com");
+		
+		WebElement password_btn = driver.findElement(By.cssSelector("input[type=\"password\"]"));
+		password_btn.sendKeys("1234");
+		
+		Thread.sleep(2000);
+		
+		WebElement login_btn = driver.findElement(By.xpath("//button[text() = 'Login']"));
+		login_btn.click();
+		
+		Thread.sleep(2000);
+		
+		Alert alert = driver.switchTo().alert();     //use for handle alerts
+		
+		alert.accept();	   
+		
+		password_btn.clear();
+		
+		WebElement password_btn_2 = driver.findElement(By.cssSelector("input[type=\"password\"]"));
+		password_btn_2.sendKeys("1234512345");
+		
+		WebElement login_btn_2 = driver.findElement(By.xpath("//button[text() = 'Login']"));
+		login_btn_2.click();
+		
+		driver.switchTo().alert().accept();
+		
+	}
+	
+	@Test
+	public void test2() throws InterruptedException {
+		driver.get("https://switch-tabs-qa-z77q.vercel.app/home");
+		
+		WebElement frame1 = driver.findElement(By.xpath("//iframe"));
+		driver.switchTo().frame(frame1);           // with the help of this we can Switch to one frame to another frame
+		
+		Thread.sleep(2000);
+		
+		WebElement click_btn = driver.findElement(By.id("clickButton"));
+		click_btn.click();
+		
+		Thread.sleep(2000);
+		
+		WebElement check = driver.findElement(By.xpath("//p[text() = 'Button Clicked!']"));
+		String text = check.getText();
+		
+		Assert.assertEquals(text, "Button Clicked!");
+		
+		driver.switchTo().defaultContent();          // with the help of this we can go back to the main frame
+		
+		WebElement Get_Coupan = driver.findElement(By.cssSelector("a[rel=\"noopener noreferrer\"]"));
+		Get_Coupan.click();
+		
+		ArrayList <String> tabs = new ArrayList<> (driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1));
+		
+		WebElement coupan_text = driver.findElement(By.xpath("//h1"));
+		String text_1 = coupan_text.getText();
+		String[] words = text_1.split(" ");
+		
+		String CoupanText = words[4];
+		driver.switchTo().window(tabs.get(0));
+		
+		WebElement paste_coupan = driver.findElement(By.cssSelector("input[placeholder=\"Enter special code\"]"));
+		paste_coupan.sendKeys(CoupanText);
+		
+		WebElement Submit_btn = driver.findElement(By.xpath("//button[text() = \"Submit Code\"]"));
+		Submit_btn.click();
+		
+		System.out.println("Hello");
+		
+		Thread.sleep(5000);
+		
+	}
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+	}
+
