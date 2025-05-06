@@ -1,0 +1,340 @@
+package Actions_Class;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Mouse {
+WebDriver driver;
+
+
+
+@BeforeClass
+public void setup() {
+	WebDriverManager.chromedriver().setup();
+	driver = new ChromeDriver();
+	driver.manage().window().maximize();
+}
+
+
+@Test
+public void test1() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	
+	WebElement Click_btn = driver.findElement(By.id("clickButton"));
+	Click_btn.click();
+	
+	Thread.sleep(2000);
+	
+	WebElement Check = driver.findElement(By.xpath("//p[text() = \"Button Clicked!\"]"));
+	String text = Check.getText();
+	
+	Assert.assertEquals(text,"Button Clicked!");
+	
+	System.out.println("Test 1 Passed");
+	
+	driver.quit();
+}
+
+@Test
+public void Test2() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	Actions a = new Actions(driver);
+	
+	WebElement Double_Click_btn = driver.findElement(By.id("doubleClickArea"));
+	a.doubleClick(Double_Click_btn).perform();
+	
+	Thread.sleep(2000);
+	
+	WebElement check = driver.findElement(By.xpath("//p[text() = \"Double Click Successful!\"]"));
+	String text =  check.getText();
+
+	Assert.assertEquals(text, "Double Click Successful!");
+
+	System.out.println("Test 2 Passed");
+
+	driver.quit();
+	
+}
+
+@Test
+public void test3() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	Actions b = new Actions(driver);
+	
+	WebElement Right_Click_btn = driver.findElement(By.id("rightClickArea"));
+	b.contextClick(Right_Click_btn).perform();
+	
+	Thread.sleep(2000);
+	
+	WebElement check = driver.findElement(By.xpath("//p[text() = \"Right Click Successful!\"]"));
+	String text = check.getText();
+	
+	Assert.assertEquals(text, "Right Click Successful!");
+	
+	System.out.println("Test 3 Passed");
+	
+	driver.quit();
+}
+
+@Test
+public void test4() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	Actions c = new Actions(driver);
+	
+	WebElement Hover_btn = driver.findElement(By.id("hoverArea"));
+	
+	c.moveToElement(Hover_btn).perform();       // moveToElement use to hover
+	
+	Thread.sleep(2000);
+	
+	WebElement check = driver.findElement(By.xpath("//p[text() = \"Hover Successful!\"]"));
+	String text = check.getText();
+	
+	Assert.assertEquals(text, "Hover Successful!");
+	
+	System.out.println("Test 4 Passed");
+	
+	driver.quit();
+}
+
+@Test
+public void test5() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	Actions d = new Actions(driver);
+	
+	WebElement Drag = driver.findElement(By.id("dragSource"));
+	
+	WebElement Drop =driver.findElement(By.id("dropTarget"));
+	
+	d.dragAndDrop(Drag,Drop).perform();
+	
+	Thread.sleep(2000);
+	
+	WebElement check = driver.findElement(By.xpath("//p[text() = \"Dropped Successfully!\"]"));
+	String text = check.getText();
+	
+	Assert.assertEquals(text, "Dropped Successfully!");
+	
+	System.out.println("Test 5 Passed");
+	
+	driver.quit();
+	
+}
+
+@Test
+public void test6() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	Actions e = new Actions(driver);
+	
+	WebElement Typing = driver.findElement(By.id("textInput"));
+	Typing.sendKeys("abcd");
+	
+	Thread.sleep(2000);
+	
+	WebElement check= driver.findElement(By.xpath("//p[text() = \"Typing Successful!\"]"));
+	String text = check.getText();
+	
+	Assert.assertEquals(text, "Typing Successful!");
+	
+	Typing.clear();
+	 
+	WebElement Typing_2 = driver.findElement(By.id("textInput"));
+	Typing_2.sendKeys("ABCD");
+	
+	Thread.sleep(2000);
+	
+	WebElement check_2= driver.findElement(By.xpath("//p[text() = \"Typing Successful!\"]"));
+	String text_2 = check_2.getText();
+	
+	Assert.assertEquals(text_2, "Typing Successful!");
+	
+	System.out.println("Passed");
+	
+	WebElement check_3= driver.findElement(By.xpath("//p[text() = \"You are typing in CAPS!\"]"));
+	String text_3 = check_3.getText();
+	
+	Assert.assertEquals(text_3, "You are typing in CAPS!");
+	
+	System.out.println("Passed Again");
+	
+	Typing_2.clear();
+	
+	WebElement Typing_3 = driver.findElement(By.id("textInput"));
+	Typing_3.sendKeys("Shivam");
+	
+	e.click(Typing_3).keyDown(Keys.COMMAND).sendKeys("a").sendKeys("c").keyUp(Keys.COMMAND).perform();
+	
+	Thread.sleep(2000);
+	
+	WebElement check_4= driver.findElement(By.xpath("//p[text() = 'Text Copied!']"));
+	String text_4 = check_4.getText();
+	
+	Assert.assertEquals(text_4, "Text Copied!");
+	
+	System.out.println("Copied");
+	
+	e.click(Typing_3).keyDown(Keys.COMMAND).sendKeys("v").perform();
+	
+	Thread.sleep(2000);
+	
+	WebElement check_5= driver.findElement(By.xpath("//p[text() = 'Text Pasted!']"));
+	String text_5 = check_5.getText();
+	
+	Assert.assertEquals(text_5, "Text Pasted!");
+	
+	System.out.println("Passed");
+	
+	driver.quit();
+}
+
+@Test
+public void test7() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	WebElement Invisible_btn = driver.findElement(By.id("hiddenButton"));
+	Invisible_btn.click();
+	
+	Thread.sleep(2000);
+	
+	WebElement check = driver.findElement(By.xpath("//p[text() = \"Invisible Button Clicked!\"]"));
+	String text = check.getText();
+	
+	Assert.assertEquals(text, "Invisible Button Clicked!");
+	
+	System.out.println("Test 7 passed");
+	
+	driver.quit();
+}
+
+
+@Test
+public void test8() throws InterruptedException {
+	driver.get("https://action-class-practice.vercel.app/");
+	
+	WebElement Enable_btn = driver.findElement(By.cssSelector("input[value=\"yes\"]"));
+	Enable_btn.click();
+	
+	Thread.sleep(2000);
+	
+	WebElement Special_btn = driver.findElement(By.id("disabledButton"));
+	if(Special_btn.isEnabled()) {
+		 Special_btn.click();
+		 
+		 WebElement check = driver.findElement(By.xpath("//p[text() = \"Disabled Button Clicked Successfully!\"]"));
+		 String text  = check.getText();
+		 
+		 Assert.assertEquals(text, "Disabled Button Clicked Successfully!");
+	} else {
+		System.out.println("Special_btn is Disable");
+	}
+	
+	WebElement Disable_btn = driver.findElement(By.cssSelector("input[value=\"no\"]"));
+	Disable_btn.click();
+	
+	Thread.sleep(2000);
+	
+	WebElement Special_btn_2 = driver.findElement(By.id("disabledButton"));
+	
+	if(Special_btn_2.isEnabled()) {
+		System.out.println("Your code is Wrong");
+	}else {
+		System.out.println("You code is right");
+	}
+
+	System.out.println("Test 8 passed");
+	
+	driver.quit();
+}
+
+
+
+
+
+
+
+    
+    
+    
+//    /////////// Hover on Amazomn /////////////
+ 
+    @Test
+public void test12() {
+	driver.get("https://www.amazon.in/?&tag=googhydrabk1-21&ref=pd_sl_5szpgfto9i_e&adgrpid=155259813593&hvpone=&hvptwo=&hvadid=748926027055&hvpos=&hvnetw=g&hvrand=15663504092611714112&hvqmt=e&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062082&hvtargid=kwd-64107830&hydadcr=14452_2417699&gad_source=1");
+	
+	Actions b = new Actions(driver);
+	
+	WebElement language = driver.findElement(By.cssSelector("span[aria-label=\"India\"]"));
+	b.moveToElement(language).perform();
+	
+	System.out.println("passed111");
+	
+	WebElement language_Hindi = driver.findElement(By.cssSelector("span[class=\"icp-nav-flag icp-nav-flag-in icp-nav-flag-lop\"]"));
+	language_Hindi.click();
+	
+	System.out.println("Teat case passed");
+	
+	driver.quit();
+}
+
+    
+    @Test
+   public void test13() throws InterruptedException {
+	   driver.get("https://www.amazon.in/?&tag=googhydrabk1-21&ref=pd_sl_5szpgfto9i_e&adgrpid=155259813593&hvpone=&hvptwo=&hvadid=748926027055&hvpos=&hvnetw=g&hvrand=15663504092611714112&hvqmt=e&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062082&hvtargid=kwd-64107830&hydadcr=14452_2417699&gad_source=1");
+	   
+	   Actions c = new Actions(driver);
+	  
+	  WebElement Account = driver.findElement(By.cssSelector("a[data-csa-c-slot-id=\"nav-link-accountList\"]"));
+	  c.moveToElement(Account).perform();
+	  
+	  Thread.sleep(2000);
+	  
+	  WebElement SignIn_btn = driver.findElement(By.xpath("//span[@class=\"nav-action-inner\"]"));
+	  SignIn_btn.click();
+	  
+	  WebElement inbox = driver.findElement(By.id("ap_email_login"));
+	  inbox.sendKeys("8604707060");
+	  
+	  Thread.sleep(2000);
+	  
+	  WebElement continue_btn = driver.findElement(By.cssSelector("input[aria-labelledby=\"continue-announce\"]"));
+	  continue_btn.click();
+	  
+	  WebElement password_btn = driver.findElement(By.id("ap_password"));
+	  password_btn.sendKeys("421316");
+	  
+	  Thread.sleep(2000);
+	  
+	  WebElement SignIn = driver.findElement(By.id("signInSubmit"));
+	  SignIn.click();
+
+	  driver.quit();
+	   
+   }
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
