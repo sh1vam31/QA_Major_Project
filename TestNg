@@ -1,0 +1,148 @@
+package Testng;   
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+
+public class Test_ng {
+//	@BeforeSuite
+//	public void BeforeSuits() {
+//		System.out.println("Before Suits run");
+//	}
+//	
+//	@BeforeTest
+//	public void Beforetest() {
+//		System.out.println("Before test run");
+//	}
+
+//	@BeforeClass
+//	public void BeforeClass() {
+//		System.out.println("Before class run");
+//	}
+	
+WebDriver driver;
+
+@BeforeMethod
+public void BeforMethod() {
+	WebDriverManager.chromedriver().setup();
+	driver = new ChromeDriver();
+	driver.manage().window().maximize();
+}
+
+@Test(priority = 0, description = "Simple arithmetic test")
+public void Test1() {
+System.out.println("Running Test1");
+System.out.println(1 / 1);
+}
+
+@Test(priority = 1, enabled = false, description = "Disabled test")
+public void Test2() {
+System.out.println("This should not print (Test2 is disabled)");
+}
+
+@Test(priority = 2, invocationCount = 4, dependsOnMethods = "Test1", alwaysRun =true, description = "Runs 4 times after Test1")
+public void Test3() {
+System.out.println("Running Test3");
+}
+
+@Test(priority = 4, expectedExceptions = ArithmeticException.class, description ="Test with expected exception")
+public void Test5() {
+System.out.println("Running Test5 - Expecting exception");
+int result = 10 / 0;
+}
+
+@Test(priority = 5, timeOut = 2000, description = "Should complete within 2 seconds")
+public void Test6() throws InterruptedException {
+System.out.println("Running Test6 - timeout test");
+Thread.sleep(1000);
+}
+
+@Test(priority = 6, invocationCount = 2, invocationTimeOut = 3000, description = "2invocations within 3 seconds")
+public void Test7() throws InterruptedException {
+System.out.println("Running Test7 - timed multiple calls");
+Thread.sleep(1000);
+}
+
+@Test(priority = 7, groups = {"smoke", "regression"}, description = "Belongs to smokeand regression groups")
+public void Test8() {
+System.out.println("Running Test8 - group test");
+}
+
+
+@DataProvider(name = "userData")
+	public Object[][] getuserData(){
+	return new Object[][] {
+		{"8604707060"},
+		{"9345678935"}
+	};
+}
+@Test(dataProvider = "userData")
+public void sendData(String number) {
+	driver.get("https://www.amazon.in/");
+	
+	Actions a = new Actions(driver);
+	WebElement Account = driver.findElement(By.xpath("//span[@class=\"nav-line-2 \"]"));
+	
+	a.moveToElement(Account).perform();
+	
+	WebElement SignIn = driver.findElement(By.xpath("//span[@class=\"nav-action-inner\"]"));
+	SignIn.click();
+	
+	WebElement Number_btn = driver.findElement(By.id("ap_email_login"));
+	Number_btn.sendKeys(number);
+	
+	WebElement Click = driver.findElement(By.xpath("//input[@class=\"a-button-input\"]"));
+	Click.click();
+	
+	driver.quit();
+}
+//@Test
+//public void test1() {
+//	System.out.println(" test 1 run");
+//}
+//
+//@Test
+//public void test2() {
+//	System.out.println(" test 2  run");
+//}
+//
+//
+//@AfterMethod
+//public void AfterMethod() {
+//	System.out.println("After Method run");
+//}
+//
+//@AfterClass
+//public void AfterClass() {
+//	System.out.println("After class run");
+//}
+//
+//@AfterSuite
+//public void AfterSuits() {
+//	System.out.println("After Suits run");
+//}
+//
+//@AfterTest
+//public void Aftertest() {
+//	System.out.println("After test run");
+//}
+
+
+}
+	
+	
